@@ -59,6 +59,25 @@ exports.createOrder = async (req, res) => {
     });
     
     await newOrder.save();
+
+    // Keep user analytics in sync with commerce activity.
+    await User.findOneAndUpdate(
+      userId ? { _id: userId } : { email: userInfo.email },
+      {
+        $inc: {
+          totalOrders: 1,
+          totalSpent: total || 0
+        },
+        $set: {
+          lastActivity: new Date(),
+          updatedAt: new Date()
+        },
+        $addToSet: {
+          tags: 'buyer'
+        }
+      }
+    );
+
     res.status(201).json({ 
       message: 'Order placed successfully',
       orderId: newOrder._id,

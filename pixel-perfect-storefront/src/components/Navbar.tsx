@@ -34,6 +34,7 @@ const Navbar = () => {
   const user = getUser();
 
   const authLinks = [
+    { to: "/profile", label: "My Profile", icon: User },
     { to: "/dashboard", label: "Products", icon: Store },
     { to: "/wishlist", label: "Wishlist", icon: Heart },
     { to: "/cart", label: "Cart", icon: ShoppingCart, badge: cartCount },
